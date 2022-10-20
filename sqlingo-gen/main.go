@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/Ficoto/sqlingo/generator"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/lqs/sqlingo/generator"
 )
 
 func main() {

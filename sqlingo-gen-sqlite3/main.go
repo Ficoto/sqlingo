@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/lqs/sqlingo/generator"
+	"github.com/Ficoto/sqlingo/generator"
 	_ "github.com/mattn/go-sqlite3"
 )
 

@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/Ficoto/sqlingo/generator"
 	_ "github.com/lib/pq"
-	"github.com/lqs/sqlingo/generator"
 )
 
 func main() {

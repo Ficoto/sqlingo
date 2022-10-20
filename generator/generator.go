@@ -153,10 +153,10 @@ func newBuffWithBaseHeader(packageName string) *bytes.Buffer {
 }
 
 var (
-	outputPath = flag.String("o", "", "file output path")
-	dataSource = flag.String("d", "", "data source connection")
-	tables     = flag.String("t", "", "-t table1,table2,...")
-	forcecases = flag.String("forcecases", "", "-forcecases ID,IDs,HTML")
+	outputPath         = flag.String("o", "", "file output path")
+	databaseConnection = flag.String("dbc", "", "database connection")
+	tables             = flag.String("t", "", "-t table1,table2,...")
+	forcecases         = flag.String("forcecases", "", "-forcecases ID,IDs,HTML")
 )
 
 // Generate generates code for the given driverName.
@@ -165,11 +165,11 @@ func Generate(driverName string, exampleDataSourceName string) error {
 	if len(*outputPath) == 0 {
 		printUsageAndExit(exampleDataSourceName)
 	}
-	if len(*dataSource) == 0 {
+	if len(*databaseConnection) == 0 {
 		printUsageAndExit(exampleDataSourceName)
 	}
 	var options options
-	options.dataSourceName = *dataSource
+	options.dataSourceName = *databaseConnection
 	if len(*tables) != 0 {
 		options.tableNames = strings.Split(*tables, ",")
 	}
@@ -225,7 +225,7 @@ func Generate(driverName string, exampleDataSourceName string) error {
 		}
 	}
 	generateGetTable(buf, options)
-	err = WriteToFile(buf, fmt.Sprintf("%s/base.go", *outputPath), true)
+	err = WriteToFile(buf, fmt.Sprintf("%s/base.dsl.go", *outputPath), true)
 	if err != nil {
 		return err
 	}
@@ -374,11 +374,11 @@ func WriteToFile(buffer *bytes.Buffer, outputFile string, force bool) error {
 	exists, _ := PathExists(outputFile)
 	if exists && !force {
 		var override string
-		fmt.Fprint(os.Stdout, fmt.Sprintf("文件(%s)已存在，是否需要覆盖(Y/y,默认不覆盖)? ", outputFile))
+		fmt.Fprint(os.Stdout, fmt.Sprintf("file(%s) already exists，is overwritten(Y/N)? ", outputFile))
 		fmt.Scanln(&override)
 
 		if override != "Y" && override != "y" {
-			fmt.Fprintln(os.Stdout, "略过"+outputFile)
+			fmt.Fprintln(os.Stdout, "skip"+outputFile)
 			return nil
 		}
 	}
